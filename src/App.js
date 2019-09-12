@@ -1,9 +1,12 @@
 import React from 'react';
-import { Button } from 'antd';
 import './App.css';
+import AppRouter from "router/appRouter";
+import { withRouter } from "react-router-dom";
 
 const App = () => (
-  <Button type="primary">Chat</Button>
+  <div className="App" style={{height: "100vh", background: "#fffcf5"}}>
+    <AppRouter />
+  </div>
 );
 
-export default App;
+export default withRouter(App);
