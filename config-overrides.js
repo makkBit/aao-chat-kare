@@ -10,7 +10,10 @@ module.exports = override(
     javascriptEnabled: true,
     modifyVars: { 
       '@primary-color': '#1f2324',
-      '@secondary-color': '#fff'
+      '@secondary-color': '#fff',
+      '@heading-color': '#3f3d3a',
+      '@text-color': '#000',
+      '@text-color-secondary' : '#3f3d3a'
     },
   }),
 );
