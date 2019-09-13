@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './loginPage.less';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 import { connect } from "react-redux";
 
 class loginPage extends Component {
@@ -8,16 +8,15 @@ class loginPage extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        localStorage.setItem("token", values.password);
+        localStorage.setItem('token', values.password);
         localStorage.setItem('userrname', values.username)
+        // if the currently logging user isn't the previous logged user
         if(values.username !== this.props.username) {
-          debugger;
-          this.props.resetChatHistory();
+          this.props.resetChatHistory(null, true);
         }
-        console.log(this.props.username);
-        debugger;
         this.props.setActiveUser(values.username);
-        this.props.history.push("/home");
+        message.success("Login Successfull");
+        this.props.history.push('/home');
       }
     });
   };
@@ -71,8 +70,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    resetChatHistory: () => dispatch({ 
-      type: 'UPDATE_CHAT_HISTORY'
+    resetChatHistory: (data, reset) => dispatch({ 
+      type: 'UPDATE_CHAT_HISTORY',
+      data,
+      reset
     }),
     setActiveUser: (data) => dispatch({
       type: 'SET_ACTIVE_USER',

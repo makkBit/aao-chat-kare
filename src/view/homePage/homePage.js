@@ -17,6 +17,10 @@ class homePage extends Component {
       inputMsg: ''
     }
     this.webSocketInstance = null;
+    this.onWsOpen = this.onWsOpen.bind(this);
+    this.onWsClose = this.onWsClose.bind(this);
+    this.onWsMessageRcv = this.onWsMessageRcv.bind(this);
+    this.onWsError = this.onWsError.bind(this);
   }
   handleInputChange = e => {
     this.setState({
@@ -27,24 +31,21 @@ class homePage extends Component {
     localStorage.clear();
     this.props.history.push("/");
   }
-  onWsOpen = (evt) => {
-    console.log(evt);
+  onWsOpen(evt) {
     if(evt) {
       this.setState({
         online: true
       });
     }
   }
-  onWsClose = (evt) => {
-    console.log(evt);
+  onWsClose(evt) {
     if(evt) {
       this.setState({
         online: false
       });
     }
   }
-  onWsMessageRcv = (evt) => {
-    console.log(evt);
+  onWsMessageRcv(evt) {
     this.props.updateChatHistory(evt.data);
     if(evt.data) {
       this.setState({
@@ -52,11 +53,8 @@ class homePage extends Component {
       });
     }
   }
-  onWsError = (evt) => {
-    console.log(evt);
-    // handleNotification
+  onWsError(evt){
     if(evt) {
-      console.log(evt);
       this.setState({
         online: false
       })
@@ -74,6 +72,12 @@ class homePage extends Component {
     this.webSocketInstance.addEventListener('close', this.onWsClose);
     this.webSocketInstance.addEventListener('message', this.onWsMessageRcv);
     this.webSocketInstance.addEventListener('error', this.onWsError);
+  }
+  componentWillUnmount() {
+    this.webSocketInstance.removeEventListener('open', this.onWsOpen);
+    this.webSocketInstance.removeEventListener('close', this.onWsClose);
+    this.webSocketInstance.removeEventListener('message', this.onWsMessageRcv);
+    this.webSocketInstance.removeEventListener('error', this.onWsError);
   }
   render() {
     return <div className="view-home-page">

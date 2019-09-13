@@ -4,7 +4,7 @@ export const chat = (state = initialState, action) => {
   switch (action.type) {
     case "UPDATE_CHAT_HISTORY": {
       return Object.assign({}, state, {
-        chatHistory: [...state.chatHistory, action.data]
+        chatHistory: action.reset ? [] : [...state.chatHistory, action.data]
       });
     }
     default:

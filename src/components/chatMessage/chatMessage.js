@@ -34,7 +34,7 @@ export default class chatMessage extends Component {
         // actions={actions}
         author={<h4>Reply</h4>}
         avatar={
-          <Avatar style={{ color: '#fff', backgroundColor: '#1f2324' }}>
+          <Avatar style={{ color: '#000', backgroundColor: '#green' }}>
             W.S.
           </Avatar>
         }
