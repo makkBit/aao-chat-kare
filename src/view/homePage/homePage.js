@@ -6,13 +6,13 @@ import ChatHeader from 'components/chatHeader';
 import ChatMessage from 'components/chatMessage';
 import ChatFooter from 'components/chatFooter';
 import { wsUri } from 'utils/constant';
+import { connect } from "react-redux";
 
-export default class homePage extends Component {
+class homePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       online: false,
-      chatHistory: [],
       submitting: false,
       inputMsg: ''
     }
@@ -45,11 +45,11 @@ export default class homePage extends Component {
   }
   onWsMessageRcv = (evt) => {
     console.log(evt);
+    this.props.updateChatHistory(evt.data);
     if(evt.data) {
-      this.setState(prevState => ({
-        chatHistory: [...prevState.chatHistory, evt.data],
+      this.setState({
         inputMsg: ""
-      }));
+      });
     }
   }
   onWsError = (evt) => {
@@ -64,9 +64,7 @@ export default class homePage extends Component {
   }
   sendMsg = () => {
     if(this.webSocketInstance.readyState === 1 && this.state.inputMsg.trim().length > 0) {
-      this.setState(prevState => ({
-        chatHistory: [...prevState.chatHistory, this.state.inputMsg],
-      }));
+      this.props.updateChatHistory(this.state.inputMsg);
       this.webSocketInstance.send(this.state.inputMsg);
     }
   }
@@ -82,9 +80,11 @@ export default class homePage extends Component {
       <div className="container">
 
         <ChatWindow >
-          <ChatHeader />
+          <ChatHeader 
+            online={this.state.online}
+          />
           <ChatMessage 
-            chatHistory={this.state.chatHistory}
+            chatHistory={this.props.chatHistory}
           />
           <ChatFooter 
             inputMsg={this.state.inputMsg}
@@ -108,3 +108,24 @@ export default class homePage extends Component {
     </div>;
   }
 }
+
+const mapStateToProps = state => {
+  const { chat } = state;
+  return { 
+    chatHistory: chat.chatHistory
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateChatHistory: (data) => dispatch({ 
+      type: 'UPDATE_CHAT_HISTORY', 
+      data 
+    }),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(homePage);

@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import './loginPage.less';
 import { Form, Icon, Input, Button } from 'antd';
+import { connect } from "react-redux";
+
 class loginPage extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         localStorage.setItem("token", values.password);
-        localStorage.setItem("username", values.username)
+        localStorage.setItem('userrname', values.username)
+        if(values.username !== this.props.username) {
+          debugger;
+          this.props.resetChatHistory();
+        }
+        console.log(this.props.username);
+        debugger;
+        this.props.setActiveUser(values.username);
         this.props.history.push("/home");
       }
     });
@@ -53,6 +62,28 @@ class loginPage extends Component {
   }
 }
 
-const LoginPageForm = Form.create({ name: 'normal_login' })(loginPage);
+const mapStateToProps = state => {
+  const { user } = state;
+  return { 
+    username: user.username
+  }
+}
 
-export default LoginPageForm;
+const mapDispatchToProps = dispatch => {
+  return {
+    resetChatHistory: () => dispatch({ 
+      type: 'UPDATE_CHAT_HISTORY'
+    }),
+    setActiveUser: (data) => dispatch({
+      type: 'SET_ACTIVE_USER',
+      data
+    })
+  }
+}
+
+const loginPageConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(loginPage);
+
+export default Form.create({ name: 'normal_login' })(loginPageConnect);

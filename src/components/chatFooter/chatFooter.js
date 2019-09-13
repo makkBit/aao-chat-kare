@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './chatFooter.less'
 import { Comment, Avatar } from 'antd';
 import Editor from "components/editor";
+import { getUserNameFirstChar } from "utils/helpers";
 
 export default class chatFooter extends Component {
 
@@ -13,7 +14,7 @@ export default class chatFooter extends Component {
       <Comment
         avatar={
           <Avatar style={{ color: '#fff', backgroundColor: '#1f2324' }}>
-            {localStorage.getItem('username')[0]}
+            {getUserNameFirstChar()}
           </Avatar>
         }
         content={

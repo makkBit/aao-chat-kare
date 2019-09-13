@@ -1,7 +1,11 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import thunkMiddleware from "redux-thunk";
+import { chat } from "./chat/reducer";
+import { user } from "./user/reducer";
 
 export const appReducer = combineReducers({
+  chat,
+  user
 });
 
 const rootReducer = (state, action) => {

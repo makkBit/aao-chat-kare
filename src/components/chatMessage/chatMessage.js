@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import './chatMessage.less';
-import { Comment, Icon, Tooltip, Avatar } from 'antd';
+import { Comment, Tooltip, Avatar } from 'antd';
 import moment from 'moment';
+import { getUserNameFirstChar, getUserName } from "utils/helpers";
+
 export default class chatMessage extends Component {
   showMsg(msg, i) {
     return <div className="message" key={i}>
       <Comment
         // actions={actions}
-        author={<h4>{localStorage.getItem('username')}</h4>}
+        author={<h4>{getUserName()}</h4>}
         avatar={
           <Avatar style={{ color: '#fff', backgroundColor: '#1f2324' }}>
-            {localStorage.getItem('username')[0]}
+            {getUserNameFirstChar()}
           </Avatar>
         }
         content={
@@ -52,7 +54,7 @@ export default class chatMessage extends Component {
   render() {
     const { chatHistory } = this.props;
     return <div className="component-chat-message">
-      {chatHistory.length > 0 && chatHistory.map((msg, index) => {
+      {chatHistory && chatHistory.length > 0 && chatHistory.map((msg, index) => {
         return (((index+1) % 2) !== 0) ? this.showMsg(msg, index) : this.showEchoMsg(msg, index)
       })}
     </div>
