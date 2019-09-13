@@ -6,7 +6,8 @@ class loginPage extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        localStorage.setItem("token", 123);
+        localStorage.setItem("token", values.password);
+        localStorage.setItem("username", values.username)
         this.props.history.push("/home");
       }
     });

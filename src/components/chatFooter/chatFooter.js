@@ -4,40 +4,24 @@ import { Comment, Avatar } from 'antd';
 import Editor from "components/editor";
 
 export default class chatFooter extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      comments: [],
-      submitting: false,
-      value: '',
-    };
-  }
-
-  handleChange = e => {
-    this.setState({
-      value: e.target.value,
-    });
-  };
-
 
   render() {
 
-    const { submitting, value } = this.state;
+    const { submitting, value, inputMsg } = this.props;
 
     return <div className="component-chat-footer">
       <Comment
         avatar={
-          <Avatar
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            alt="Han Solo"
-          />
+          <Avatar style={{ color: '#fff', backgroundColor: '#1f2324' }}>
+            {localStorage.getItem('username')[0]}
+          </Avatar>
         }
         content={
           <Editor
-            onChange={this.handleChange}
-            onSubmit={this.handleSubmit}
+            onChange={this.props.onChange}
+            onSubmit={this.props.handleSubmit}
             submitting={submitting}
-            value={value}
+            value={inputMsg}
           />
         }
       />
